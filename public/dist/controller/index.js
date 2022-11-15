@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
+const register_1 = require("../validators/register");
 const { v4: uuidv4 } = require("uuid");
 function register(req, res) {
     const sessionID = uuidv4();
@@ -16,10 +17,25 @@ function register(req, res) {
         sessionID: sessionID,
     };
     console.log(newUser);
+    const firstNameValidator = new register_1.RegexValidator().name(newUser.first_name);
+    console.log(firstNameValidator);
+    const lastNameValidator = new register_1.RegexValidator().name(newUser.last_name);
+    console.log(lastNameValidator);
+    const emailValidator = new register_1.RegexValidator().email(newUser.email);
+    console.log(emailValidator);
+    const passwordNameValidator = new register_1.RegexValidator().pass(newUser.password);
+    console.log(passwordNameValidator);
+    // const usernameValidator = new RegexValidator().username(newUser.username);
+    // console.log(usernameValidator);
+    // console.log(userValidator);
+    // if (userValidator) {
+    //     res.cookie("token", sessionID);
+    // } else {
+    //     console.log("Dados inválidos");
+    // }
+    // console.log(newUser);
     // users.push(object2);
     //foreach para atualizar o cadastro
-    res.cookie("token", sessionID);
-    res.json(newUser);
     return newUser;
     // res.send(object);
 }

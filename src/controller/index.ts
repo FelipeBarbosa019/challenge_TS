@@ -1,4 +1,4 @@
-interface usersType {
+export interface usersType {
     username: string;
     email: string;
     first_name: string;
@@ -10,6 +10,7 @@ interface usersType {
     sessionID: string;
 }
 
+import { RegexValidator } from "../validators/register";
 const { v4: uuidv4 } = require("uuid");
 
 export function register(req: any, res: any) {
@@ -20,7 +21,7 @@ export function register(req: any, res: any) {
         email: req.body.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        password: req.body.pass,
+        password: req.body.password,
         squad: req.body.squad,
         admin: req.body.admin,
         leader: req.body.leader,
@@ -28,9 +29,32 @@ export function register(req: any, res: any) {
     };
 
     console.log(newUser);
+
+    const firstNameValidator = new RegexValidator().name(newUser.first_name);
+    console.log(firstNameValidator);
+
+    const lastNameValidator = new RegexValidator().name(newUser.last_name);
+    console.log(lastNameValidator);
+
+    const emailValidator = new RegexValidator().email(newUser.email);
+    console.log(emailValidator);
+
+    const passwordNameValidator = new RegexValidator().pass(newUser.password);
+    console.log(passwordNameValidator);
+
+    // const usernameValidator = new RegexValidator().username(newUser.username);
+    // console.log(usernameValidator);
+
+    // console.log(userValidator);
+    // if (userValidator) {
+    //     res.cookie("token", sessionID);
+    // } else {
+    //     console.log("Dados inválidos");
+    // }
+
+    // console.log(newUser);
     // users.push(object2);
     //foreach para atualizar o cadastro
-    res.cookie("token", sessionID);
 
     return newUser;
     // res.send(object);
