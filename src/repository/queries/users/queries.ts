@@ -8,7 +8,7 @@
 //     port: process.env.DB_PORT,
 // });
 
-export class UserQueries {
+class UserQueries {
     public async createUser(
         _client: any,
         _user_name: string,
@@ -170,6 +170,32 @@ export class UserQueries {
             };
         }
     }
+
+
+    public checkPrivillege(_client: any, _id: number, _admin: boolean) {
+        const query = {
+            text: "SELECT * FROM public.users WHERE id = $1;",
+            values: [_id, _admin],
+        };
+        this.tryCatch
+        
+    }
+    protected async tryCatch(_client?: any): Promise<object>  {
+        try {
+            const res = await _client.query(query);
+            return {
+                data: res,
+                error: null,
+            };
+        } catch (error) {
+            return {
+                data: "Query failed",
+                error: error,
+            };
+        }
+    }
 }
 
-export default UserQueries;
+
+export default UserQueries
+
