@@ -1,4 +1,5 @@
 import express from "express";
+import { register } from "../controller";
 
 const router = express();
 
@@ -10,7 +11,7 @@ router.get("/teams/");
 router.get("/teams/:team");
 
 //POST
-router.post("/users/");
+router.post("/users/", register);
 router.post("/team/");
 router.post("/team/:team_id/member/:user_id");
 

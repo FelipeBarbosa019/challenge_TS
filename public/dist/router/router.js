@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const controller_1 = require("../controller");
 const router = (0, express_1.default)();
 //GET
 router.get("/users/me");
@@ -12,7 +13,7 @@ router.get("/users/:user_id");
 router.get("/teams/");
 router.get("/teams/:team");
 //POST
-router.post("/users/");
+router.post("/users/", controller_1.register);
 router.post("/team/");
 router.post("/team/:team_id/member/:user_id");
 //PATCH
