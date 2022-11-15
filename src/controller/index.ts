@@ -26,6 +26,8 @@ export function register(req: any, res: any) {
         leader: req.body.leader,
         sessionID: sessionID,
     };
+
+    console.log(newUser);
     // users.push(object2);
     //foreach para atualizar o cadastro
     res.cookie("token", sessionID);
