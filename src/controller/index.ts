@@ -13,9 +13,8 @@ export interface squadsType {
     name: string;
     leader: boolean;
 }
-
+import UserQueries from "../repository/queries/users/queries";
 import { RegexValidator } from "../validators/register";
-import { UserQueries } from "../repository/queries/users/queries";
 const { v4: uuidv4 } = require("uuid");
 
 export function register(req: any, res: any) {
@@ -128,13 +127,14 @@ export function register(req: any, res: any) {
 //     });
 // }
 export function registerSquad(req: any, res: any) {
-    if (req.body.admin) {
-        const newSquad: squadsType = {
+    if (!(new UserQueries().getUser)) { return res.send("Não é usuário administrador!") }
+    const newSquad : squadsType = {
             name: req.body.name,
             leader: req.body.leader,
         };
-    }
-    // console.log(newUser);
-    // res.send(newUser);
-    // return newUser;
+
+    const nameValidator = new RegexValidator().name(newSquad.name);
+    console.log(nameValidator, "\n time:", newSquad);
+    res.send(newSquad);
+    return newSquad;
 }
