@@ -1,5 +1,5 @@
 import express from "express";
-import { register } from "../controller";
+import { register, registerSquad } from "../controller";
 
 const router = express();
 
@@ -12,7 +12,7 @@ router.get("/teams/:team");
 
 //POST
 router.post("/users/", register);
-router.post("/team/");
+router.post("/team/", registerSquad);
 router.post("/team/:team_id/member/:user_id");
 
 //PATCH

@@ -4,13 +4,18 @@ export interface usersType {
     first_name: string;
     last_name: string;
     password: string;
-    squad: number;
-    admin: boolean;
+    squad?: number;
+    admin?: boolean;
+    leader?: boolean;
+    sessionID?: string;
+}
+export interface squadsType {
+    name: string;
     leader: boolean;
-    sessionID: string;
 }
 
 import { RegexValidator } from "../validators/register";
+import { UserQueries } from "../repository/queries/users/queries";
 const { v4: uuidv4 } = require("uuid");
 
 export function register(req: any, res: any) {
@@ -28,8 +33,6 @@ export function register(req: any, res: any) {
         sessionID: sessionID,
     };
 
-    console.log(newUser);
-
     const firstNameValidator = new RegexValidator().name(newUser.first_name);
     console.log(firstNameValidator);
 
@@ -39,25 +42,23 @@ export function register(req: any, res: any) {
     const emailValidator = new RegexValidator().email(newUser.email);
     console.log(emailValidator);
 
-    const passwordNameValidator = new RegexValidator().pass(newUser.password);
-    console.log(passwordNameValidator);
+    const passwordValidator = new RegexValidator().pass(newUser.password);
+    console.log(passwordValidator);
 
-    // const usernameValidator = new RegexValidator().username(newUser.username);
-    // console.log(usernameValidator);
+    if (
+        !newUser.username &&
+        !firstNameValidator &&
+        !lastNameValidator &&
+        !emailValidator &&
+        !passwordValidator
+    ) {
+        res.cookie("token", sessionID);
+        // new UserQueries().createUser(newUser.username, newUser.email, newUser.first_name, newUser.last_name, newUser.password);
+    }
 
-    // console.log(userValidator);
-    // if (userValidator) {
-    //     res.cookie("token", sessionID);
-    // } else {
-    //     console.log("Dados inválidos");
-    // }
-
-    // console.log(newUser);
-    // users.push(object2);
-    //foreach para atualizar o cadastro
-
+    console.log(newUser);
+    res.send(newUser);
     return newUser;
-    // res.send(object);
 }
 
 // export function login(req: any, res: any) {
@@ -126,3 +127,14 @@ export function register(req: any, res: any) {
 //         }
 //     });
 // }
+export function registerSquad(req: any, res: any) {
+    if (req.body.admin) {
+        const newSquad: squadsType = {
+            name: req.body.name,
+            leader: req.body.leader,
+        };
+    }
+    // console.log(newUser);
+    // res.send(newUser);
+    // return newUser;
+}
