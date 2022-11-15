@@ -1,11 +1,11 @@
 CREATE TABLE public.user (
-	"id" uuid NOT NULL,
+	"id" serial NOT NULL,
 	"user_name" TEXT NOT NULL,
 	"email" TEXT NOT NULL,
 	"first_name" TEXT NOT NULL,
 	"last_name" TEXT NOT NULL,
 	"password" TEXT NOT NULL,
-	"squad" uuid NOT NULL,
+	"squad" int NOT NULL,
 	"admin" BOOLEAN NOT NULL,
 	"leader" BOOLEAN NOT NULL,
 	CONSTRAINT "user_pk" PRIMARY KEY ("id")
@@ -14,8 +14,8 @@ CREATE TABLE public.user (
 );
 
 CREATE TABLE public.squad (
-	"id" uuid NOT NULL,
-	"leader" uuid NOT NULL,
+	"id" serial NOT NULL,
+	"leader" int NOT NULL,
 	"name" TEXT NOT NULL,
 	CONSTRAINT "squad_pk" PRIMARY KEY ("id")
 ) WITH (
