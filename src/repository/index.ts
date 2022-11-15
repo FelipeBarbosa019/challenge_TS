@@ -11,6 +11,7 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
+
 async function query() {
     const codeSQL = `
     CREATE TABLE accounts (
