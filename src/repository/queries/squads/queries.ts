@@ -1,15 +1,15 @@
-import { pool } from "../../index";
+import { pool } from "../../db";
 
 class SquadQueries{
     public async createSquad(_leader:number,_squad_name:string):Promise<object>{
         const query = {
-            'text': 'INSERT INTO public.squads(leader,name) VALUES($1,$2);',
+            'text': 'INSERT INTO public.squads(leader,name) VALUES($1,$2) RETURNING *;',
             'values':[_leader,_squad_name]
         }
         try {
             const res = await pool.query(query.text,query.values);
             return { 
-                'data':res,
+                data: res.rows[0],
                 'error': null
             };
         } catch (error) {
@@ -29,7 +29,7 @@ class SquadQueries{
         try {
             const res = await pool.query(query.text,query.values);
             return { 
-                'data':res,
+                data: res.rows[0],
                 'error': null
             };
         } catch (error) {
@@ -48,7 +48,7 @@ class SquadQueries{
         try {
             const res = await pool.query(query.text);
             return { 
-                'data':res,
+                data: res.rows,
                 'error': null
             };
         } catch (error) {
@@ -62,13 +62,13 @@ class SquadQueries{
     
     public async updateSquad(_squad_id:number, _leader:number, _squad_name:string):Promise<object>{
         const query = {
-            'text': 'UPDATE squads SET leader = $2, name = $3 WHERE id = $1;',
+            'text': 'UPDATE squads SET leader = $2, name = $3 WHERE id = $1 RETURNING *;',
             'values':[_squad_id, _leader, _squad_name]
         }
         try {
             const res = await pool.query(query.text,query.values);
             return { 
-                'data':res,
+                data: res.rows[0],
                 'error': null
             };
         } catch (error) {
@@ -82,13 +82,13 @@ class SquadQueries{
     
     public async deleteSquad(_squad_id:number):Promise<object>{
         const query = {
-            'text': 'DELETE FROM squads WHERE ID = $1;',
+            'text': 'DELETE FROM squads WHERE ID = $1 RETURNING *;',
             'values':[_squad_id]
         }
         try {
             const res = await pool.query(query.text,query.values);
             return { 
-                'data':res,
+                data: res.rows[0],
                 'error': null
             };
         } catch (error) {
