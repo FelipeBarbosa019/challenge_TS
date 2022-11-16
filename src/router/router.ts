@@ -39,12 +39,3 @@ router.delete("/team/:team_id");
 // DELETE “/team/:team_id” - Deletar equipe (Admin)
 
 module.exports = router;
-
-
-// {
-//     "username": "jose_tonhao",
-//     "email": "jose@gmail.com",
-//     "first_name": "Jose",
-//     "last_name": "Ferreira",
-//     "password": "f123456"
-// }

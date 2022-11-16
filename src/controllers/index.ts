@@ -1,37 +1,30 @@
 export interface usersType {
     username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    password: string;
-    squad: number;
-    admin: boolean;
-    leader: boolean;
-    sessionID: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    password?: string;
+    squad?: number;
+    admin?: boolean;
+    leader?: boolean;
+    sessionID?: string;
 }
 export interface squadsType {
     name: string;
     leader?: number;
 }
-import { pool } from '../repository/db';
+import { pool } from '../repository';
 import SquadQueries from '../repository/queries/squads/queries';
 import UserQueries from "../repository/queries/users/queries";
 import { RegexValidator } from "../validators/register";
 const { v4: uuidv4 } = require("uuid");
 
-import {QueryResult} from 'pg'
 
-interface QueryResponse {
-    data: QueryResult | string,
-    error: any
-}
-
-
-export async function registerUser(req: any, res: any) {
+export function registerUser(req: any, res: any) {
     const sessionID = uuidv4();
 
     const newUser: usersType = {
-        username: req.body.username,
+        username: req.body.name,
         email: req.body.email,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
@@ -42,8 +35,11 @@ export async function registerUser(req: any, res: any) {
         sessionID: sessionID
     };
 
-    const nameValidator = new RegexValidator().name(newUser.first_name + newUser.last_name);
-    console.log(nameValidator);
+    const firstNameValidator = new RegexValidator().name(newUser.first_name);
+    console.log(firstNameValidator);
+
+    const lastNameValidator = new RegexValidator().name(newUser.last_name);
+    console.log(lastNameValidator);
 
     const emailValidator = new RegexValidator().email(newUser.email);
     console.log(emailValidator);
@@ -52,22 +48,19 @@ export async function registerUser(req: any, res: any) {
     console.log(passwordValidator);
 
     if (
-        newUser.username &&
-        nameValidator &&
-        emailValidator &&
-        passwordValidator
+        !newUser.username &&
+        !firstNameValidator &&
+        !lastNameValidator &&
+        !emailValidator &&
+        !passwordValidator
     ) {
-        res.cookie("token", sessionID,{expire:(Date.now()+3600000)});
-        const response : QueryResponse = await new UserQueries().createUser(newUser.username, newUser.email, newUser.first_name, newUser.last_name, newUser.password);
-        console.log('Response: ',response)
-        res.status(201).send("Usuário " + req.body.username + " cadastrado com sucesso")
-    } else {
-        res.status(500).send('Falha ao validar os campos')
+        res.cookie("token", sessionID);
+        // new UserQueries().createUser(newUser.username, newUser.email, newUser.first_name, newUser.last_name, newUser.password);
     }
- 
-    // console.log(newUser);
-    // res.send(newUser);
-    // return newUser;
+
+    console.log(newUser);
+    res.send(newUser);
+    return newUser;
 }
 
 // export function login(req: any, res: any) {
@@ -149,7 +142,7 @@ export function getUserInfo(req: any, res: any) {
     if (!( (new UserQueries().getUser) &&
            (new SquadQueries().getSquad) ))
         { return res.send("Não é usuário administrador e/ou líder!") }
-        const userInfo = {
+        const userInfo: usersType = {
             username: req.param.user_id   // aqui ele deve obter a partir do parametro passado na url
         };
     console.log(userInfo);
@@ -186,7 +179,7 @@ export function getSquadInfo(req: any, res: any) {
         name: req.param.team,
     };
     
-    const querySquad = new SquadQueries().getSquad(req.param.team)
+    const querySquad = new SquadQueries().getSquad(pool, req.param.team)
 
     console.log(squadInfo);
     res.status(200)
