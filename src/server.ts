@@ -9,10 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routerServer);
 
-app.listen(port, (err: any) => {
+app.listen(port, (err: never) => {
     if (err) {
-        console.log("Problema na conexão com o servidor");
+        console.warn("Problema na conexão com o servidor.");
     } else {
-        console.log(`Servidor ativo na porta: ${port}`);
+        console.log("Servidor ativo na porta:", port);
     }
 });
