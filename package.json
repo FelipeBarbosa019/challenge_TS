@@ -1,9 +1,9 @@
 {
     "name": "challenge_team_typescript",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "src/server.js",
     "scripts": {
-        "build": "npx tsc && nodemon ./public/dist/server.js",
+        "build": "concurrently \"npx tsc\" \"nodemon ./public/dist/server.js\" ",
         "build:prod": "npx tsc --strict false",
         "build:types": "npx tsc -d --emitDeclarationOnly --declarationDir ./public/types"
     },
