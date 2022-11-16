@@ -1,17 +1,17 @@
 import express from "express";
-import { register, registerSquad } from "../controller";
+import { getOwnInfo, getSquadInfo, getUserInfo, listSquads, listUsers, registerSquad, registerUser } from "../controllers";
 
 const router = express();
 
 //GET
-router.get("/users/me");
-router.get("/users/");
-router.get("/users/:user_id");
-router.get("/teams/");
-router.get("/teams/:team");
+router.get("/users/me", getOwnInfo);
+router.get("/users/", listUsers);
+router.get("/users/:user_id", getUserInfo);
+router.get("/teams/", listSquads);
+router.get("/teams/:team", getSquadInfo);
 
 //POST
-router.post("/users/", register);
+router.post("/users/", registerUser);
 router.post("/team/", registerSquad);
 router.post("/team/:team_id/member/:user_id");
 

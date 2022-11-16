@@ -1,9 +1,9 @@
 export interface usersType {
     username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    password: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    password?: string;
     squad?: number;
     admin?: boolean;
     leader?: boolean;
@@ -11,13 +11,16 @@ export interface usersType {
 }
 export interface squadsType {
     name: string;
-    leader: boolean;
+    leader?: number;
 }
+import { pool } from '../repository';
+import SquadQueries from '../repository/queries/squads/queries';
 import UserQueries from "../repository/queries/users/queries";
 import { RegexValidator } from "../validators/register";
 const { v4: uuidv4 } = require("uuid");
 
-export function register(req: any, res: any) {
+
+export function registerUser(req: any, res: any) {
     const sessionID = uuidv4();
 
     const newUser: usersType = {
@@ -29,7 +32,7 @@ export function register(req: any, res: any) {
         squad: req.body.squad,
         admin: req.body.admin,
         leader: req.body.leader,
-        sessionID: sessionID,
+        sessionID: sessionID
     };
 
     const firstNameValidator = new RegexValidator().name(newUser.first_name);
@@ -126,15 +129,68 @@ export function register(req: any, res: any) {
 //         }
 //     });
 // }
-export function registerSquad(req: any, res: any) {
-    if (!(new UserQueries().getUser)) { return res.send("Não é usuário administrador!") }
-    const newSquad : squadsType = {
-            name: req.body.name,
-            leader: req.body.leader,
-        };
 
+export function getOwnInfo(req: any, res: any) {
+    const userOwnInfo = new UserQueries().getUser
+    // falta especificar como obter no banco de dados o username 
+    console.log(userOwnInfo);
+    res.status(200)
+    res.send(userOwnInfo);
+    return userOwnInfo;
+}
+export function getUserInfo(req: any, res: any) {
+    if (!( (new UserQueries().getUser) &&
+           (new SquadQueries().getSquad) ))
+        { return res.send("Não é usuário administrador e/ou líder!") }
+        const userInfo: usersType = {
+            username: req.param.user_id   // aqui ele deve obter a partir do parametro passado na url
+        };
+    console.log(userInfo);
+    res.status(200)
+    res.send(userInfo);
+    return userInfo;
+}
+//   fazer o TRY CATCH para implementar tratamento de erro e requisição condicionada
+export function registerSquad(req: any, res: any) {
+    const newSquad : squadsType = {
+        name: req.body.name,
+        leader: req.body.leader,
+    };
     const nameValidator = new RegexValidator().name(newSquad.name);
+    
+    if (!nameValidator) { return res.send("Nome não validado.") }
+    if (!(new UserQueries().getUser)) { return res.send("Não é usuário administrador!") }
+
     console.log(nameValidator, "\n time:", newSquad);
+    res.status(201)
     res.send(newSquad);
     return newSquad;
+}
+export function listUsers(req: any, res: any) {
+    const allUsersInfo =  new UserQueries().getAllUsers
+    
+    console.dir(allUsersInfo);
+    res.status(200)
+    res.send(allUsersInfo);
+    return req.body(allUsersInfo);
+}
+export function getSquadInfo(req: any, res: any) {
+    const squadInfo: squadsType = {
+        name: req.param.team,
+    };
+    
+    const querySquad = new SquadQueries().getSquad(pool, req.param.team)
+
+    console.log(squadInfo);
+    res.status(200)
+    res.send(squadInfo);
+    return squadInfo;
+}
+export function listSquads(req: any, res: any) {
+    const allSquadsInfo =  new SquadQueries().getAllSquads
+    
+    console.dir(allSquadsInfo);
+    res.status(200)
+    res.send(allSquadsInfo);
+    return req.body(allSquadsInfo);
 }
