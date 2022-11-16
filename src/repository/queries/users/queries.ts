@@ -1,12 +1,14 @@
 // require("dotenv").config();
-// const { Pool } = require("pg");
-// const pool = new Pool({
+// const { pool } = require("pg");
+// const pool = new pool({
 //     user: process.env.DB_USER,
 //     host: process.env.DB_HOST,
 //     database: process.env.DB_NAME,
 //     password: process.env.DB_PASS,
 //     port: process.env.DB_PORT,
 // });
+
+import { pool } from "../../index";
 
 class UserQueries {
     public async createUser(
@@ -22,7 +24,7 @@ class UserQueries {
             values: [_user_name, _email, _first_name, _last_name, _password],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -41,7 +43,7 @@ class UserQueries {
             values: [_id],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             if (res.rows.length == 0) {
                 throw new Error(
                     "T H R O W   E R R O R ! ! ! Nenhum usuário encontrado."
@@ -60,7 +62,7 @@ class UserQueries {
             text: "SELECT * FROM users;",
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -94,7 +96,7 @@ class UserQueries {
             ],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -117,7 +119,7 @@ class UserQueries {
             values: [_id, _squad],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -139,7 +141,7 @@ class UserQueries {
             values: [_id],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -158,7 +160,7 @@ class UserQueries {
             values: [_id],
         };
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,
@@ -182,7 +184,7 @@ class UserQueries {
     }
     protected async tryCatch(_client?: any): Promise<object>  {
         try {
-            const res = await _client.query(query);
+            const res = await pool.query(query.text,query.values);
             return {
                 data: res,
                 error: null,

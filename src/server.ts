@@ -1,6 +1,8 @@
 const express = require("express");
 const routerServer = require("./router/router.js");
 
+require('dotenv').config()
+
 const port = 8000;
 const app = express();
 
