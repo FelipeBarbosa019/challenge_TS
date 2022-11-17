@@ -1,6 +1,10 @@
-import express from "express";
-import { getOwnInfo, getSquadInfo, getUserInfo, listSquads, listUsers, registerSquad, registerUser } from "../controllers";
+import { getOwnInfo, listUsers, getUserInfo, listSquads, getSquadInfo,
+        registerUser, registerSquad, insertUserSquad, login,
+        updateUser, updateSquad,
+        deleteUser, deleteSquad, removeUserFromSquad  
+} from "../controllers";
 
+import express from "express";
 const router = express();
 
 //GET
@@ -13,16 +17,17 @@ router.get("/teams/:team", getSquadInfo);
 //POST
 router.post("/users/", registerUser);
 router.post("/team/", registerSquad);
-router.post("/team/:team_id/member/:user_id");
+router.post("/team/:team_id/member/:user_id", insertUserSquad);
+router.post("/login/",login)
 
 //PATCH
-router.patch("/users/:user_id");
-router.patch("/team/:team_id");
+router.patch("/users/:user_id", updateUser);
+router.patch("/team/:team_id", updateSquad);
 
 //DELETE
-router.delete("/team/:team_id/member/:user_id");
-router.delete("/users/:user_id");
-router.delete("/team/:team_id");
+router.delete("/users/:user_id", deleteUser);
+router.delete("/team/:team_id", deleteSquad);
+router.delete("/team/:team_id/member/:user_id", removeUserFromSquad);
 
 // GET “/users/me” - Ver seu próprio usuário (Todos)
 // GET “/users/” - Ver todos os usuários (Admin)

@@ -1,9 +1,9 @@
 {
     "name": "challenge_team_typescript",
     "version": "1.0.0",
-    "main": "src/server.js",
+    "main": "index.js",
     "scripts": {
-        "build": "concurrently \"npx tsc\" \"nodemon ./public/dist/server.js\" ",
+        "build": "concurrently \"npx tsc -w\" \"nodemon ./public/dist/server.js\"",
         "build:prod": "npx tsc --strict false",
         "build:types": "npx tsc -d --emitDeclarationOnly --declarationDir ./public/types"
     },
@@ -16,6 +16,7 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "jsonwebtoken": "^8.5.1",
+        "node": "^19.1.0",
         "pg": "^8.8.0",
         "uuid": "^9.0.0"
     },
@@ -25,6 +26,7 @@
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.14",
         "@types/node": "^18.11.9",
+        "@types/pg": "^8.6.5",
         "concurrently": "^7.5.0",
         "nodemon": "^2.0.20",
         "typescript": "^4.8.4"

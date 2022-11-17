@@ -1,6 +1,6 @@
 const express = require("express");
 const routerServer = require("./router/router.js");
-const cookieParser = require('cookieParser')
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config()
 

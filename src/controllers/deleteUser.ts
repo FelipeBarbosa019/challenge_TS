@@ -1,12 +1,11 @@
 import UserQueries from "../repository/queries/users/queries";
 
-export function listUsers(req: any, res: any) {
+export function deleteUser(req: any, res: any) {
     if(req.cookies.admin) {
-        const allUsersInfo =  new UserQueries().getAllUsers()
+        const deleteUser =  new UserQueries().deleteUser(req.params.user_id)
         res.status(200)
-        res.send(allUsersInfo);
+        res.send("Usuário deletado com sucesso");
     } else {
         res.status(500).send("Usuário não possui permissão");
     }
-    
 }
