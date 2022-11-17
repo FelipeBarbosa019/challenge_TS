@@ -1,4 +1,4 @@
-import { QueryResult } from 'pg'
+import { QueryResult } from "pg";
 
 export interface UsersType {
     username: string;
@@ -18,6 +18,6 @@ export interface SquadsType {
 }
 
 export interface QueryResponse {
-    data: QueryResult | string,
-    error: any
+    data: QueryResult | string;
+    error: any;
 }

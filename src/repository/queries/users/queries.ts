@@ -1,25 +1,24 @@
 import { pool } from "../../db";
-import {QueryResult} from 'pg'
+import {
+    UsersType,
+    QueryResponse,
+    SquadsType,
+} from "../../../interfaces/interface";
 
-interface QueryResponse {
-    data: QueryResult | string,
-    error: any
-}
-
-class UserQueries{
+class UserQueries {
     public async createUser(
         _user_name: string,
         _email: string,
         _first_name: string,
         _last_name: string,
         _password: string
-    )  {
+    ): Promise<QueryResponse> {
         const query = {
-            text: "INSERT INTO public.users(user_name, email, first_name, last_name, password) VALUES($1,$2,$3,$4,$5) RETURNING *;",
+            text: "INSERT INTO users(user_name, email, first_name, last_name, password) VALUES($1,$2,$3,$4,$5) RETURNING *;",
             values: [_user_name, _email, _first_name, _last_name, _password],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
             return {
                 data: res.rows[0],
                 error: null,
@@ -32,17 +31,17 @@ class UserQueries{
         }
     }
 
-    public async verify(_email: string) {
+    public async verify(_email: string): Promise<QueryResponse> {
         const query = {
-            text: "SELECT * FROM users WHERE email = $1 RETURNING id;",
+            text: "SELECT * FROM users WHERE email = $1;",
             values: [_email],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
             return {
                 data: res.rows[0],
                 error: null,
-            }; 
+            };
         } catch (error) {
             return {
                 data: "Query not found user",
@@ -51,38 +50,22 @@ class UserQueries{
         }
     }
 
-    public async login(_email: string, _password: string) {
+    public async login(
+        _email: string,
+        _password: string
+    ): Promise<QueryResponse> {
         const query = {
             text: "SELECT * FROM users WHERE (email = $1 AND password = $2);",
             values: [_email, _password],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
 
-            return {
-                data: res.rows[0],
-                error: null,
-            };
-
-        } catch (error) {
-            return {
-                data: "Query not found user",
-                error: error,
-            };
-        }
-    }
-
-    public async getUser(_id: number) {
-        const query = {
-            text: "SELECT * FROM public.users WHERE id = $1;",
-            values: [_id],
-        };
-        try {
-            const res = await pool.query(query.text,query.values);
-            if (res.rows.length == 0) {
-                throw new Error(
-                    "T H R O W   E R R O R ! ! ! Nenhum usuário encontrado."
-                ); // T H R O W   E R R O R // T H R O W   E R R O R // T H R O W   E R R O R // T H R O W   E R R O R //
+            if (true) {
+                return {
+                    data: res.rows[0],
+                    error: null,
+                };
             }
         } catch (error) {
             return {
@@ -92,7 +75,34 @@ class UserQueries{
         }
     }
 
-    public async getAllUsers(): Promise<object> {
+    public async getUser(_id: number): Promise<QueryResponse> {
+        const query = {
+            text: "SELECT * FROM users WHERE id = $1;",
+            values: [_id],
+        };
+        try {
+            const res = await pool.query(query.text, query.values);
+
+            if (res.rows.length == 0) {
+                return {
+                    data: "User not found",
+                    error: "User not found",
+                };
+            } else {
+                return {
+                    data: res.rows[0],
+                    error: null,
+                };
+            }
+        } catch (error) {
+            return {
+                data: "Query not found user",
+                error: error,
+            };
+        }
+    }
+
+    public async getAllUsers() {
         const query = {
             text: "SELECT * FROM users;",
         };
@@ -117,7 +127,7 @@ class UserQueries{
         _first_name: string,
         _last_name: string,
         _password: string
-    ): Promise<object> {
+    ): Promise<QueryResponse> {
         const query = {
             text: "UPDATE users SET user_name = $2, email = $3, first_name = $4, last_name = $5, password = $6 WHERE id = $1 RETURNING *;",
             values: [
@@ -130,7 +140,7 @@ class UserQueries{
             ],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
             return {
                 data: res.rows[0],
                 error: null,
@@ -146,13 +156,16 @@ class UserQueries{
     public async addUserToSquad(
         _id: number,
         _squad: number
-    ): Promise<object> {
+    ): Promise<QueryResponse> {
         const query = {
-            text: "UPDATE users SET squad = $2 WHERE id = $1 RETURNING *;",
+            text: "UPDATE users SET squad = $2 WHERE id = $1 AND leader = false RETURNING *;",
             values: [_id, _squad],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            console.log("user: ", _id);
+            console.log("squad: ", _squad);
+            const res = await pool.query(query.text, query.values);
+            console.log("addUserToSquad res: ", res.rows);
             return {
                 data: res.rows[0],
                 error: null,
@@ -165,15 +178,13 @@ class UserQueries{
         }
     }
 
-    public async removeUserFromSquad(
-        _id: number
-    ): Promise<object> {
+    public async removeUserFromSquad(_id: number): Promise<QueryResponse> {
         const query = {
             text: "UPDATE users SET squad = NULL WHERE id = $1 RETURNING *;",
             values: [_id],
         };
         try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
             return {
                 data: res.rows[0],
                 error: null,
@@ -186,28 +197,13 @@ class UserQueries{
         }
     }
 
-    public async deleteUser(_id: number): Promise<object> {
+    public async deleteUser(_id: number): Promise<QueryResponse> {
         const query = {
-            text: "DELETE FROM public.users WHERE id = $1 RETURNING *;",
+            text: "DELETE FROM users WHERE id = $1 RETURNING *;",
             values: [_id],
         };
         try {
-            const res = await pool.query(query.text,query.values);
-            return {
-                data: res.rows[0],
-                error: null,
-            };
-        } catch (error) {
-            return {
-                data: "Query failed",
-                error: error,
-            };
-        }
-    }
-
-    protected async tryCatch(query?: any)  {
-        try {
-            const res = await pool.query(query.text,query.values);
+            const res = await pool.query(query.text, query.values);
             return {
                 data: res.rows[0],
                 error: null,
@@ -221,6 +217,19 @@ class UserQueries{
     }
 }
 
+export default UserQueries;
 
-export default UserQueries
-
+// protected async tryCatch(query?: any) {
+//     try {
+//         const res = await pool.query(query.text, query.values);
+//         return {
+//             data: res.rows[0],
+//             error: null,
+//         };
+//     } catch (error) {
+//         return {
+//             data: "Query failed",
+//             error: error,
+//         };
+//     }
+// }

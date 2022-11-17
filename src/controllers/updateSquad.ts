@@ -1,9 +1,6 @@
-// import UserQueries from "../repository/queries/squad/queries";
+import UserQueries from "../repository/queries/users/queries";
 
-export function updateSquad(req: any, res: any) {
-
-}
-
+export async function updateSquad(req: any, res: any) {}
 
 //  if (
 //      cookie?admin ||
