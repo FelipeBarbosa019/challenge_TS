@@ -1,13 +1,3 @@
-// require("dotenv").config();
-// const { pool } = require("pg");
-// const pool = new pool({
-//     user: process.env.DB_USER,
-//     host: process.env.DB_HOST,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASS,
-//     port: process.env.DB_PORT,
-// });
-
 import { pool } from "../../db";
 import {QueryResult} from 'pg'
 
@@ -37,6 +27,46 @@ class UserQueries{
         } catch (error) {
             return {
                 data: "Query failed",
+                error: error,
+            };
+        }
+    }
+
+    public async verify(_email: string) {
+        const query = {
+            text: "SELECT * FROM users WHERE email = $1 RETURNING id;",
+            values: [_email],
+        };
+        try {
+            const res = await pool.query(query.text,query.values);
+            return {
+                data: res.rows[0],
+                error: null,
+            }; 
+        } catch (error) {
+            return {
+                data: "Query not found user",
+                error: error,
+            };
+        }
+    }
+
+    public async login(_email: string, _password: string) {
+        const query = {
+            text: "SELECT * FROM users WHERE (email = $1 AND password = $2);",
+            values: [_email, _password],
+        };
+        try {
+            const res = await pool.query(query.text,query.values);
+
+            return {
+                data: res.rows[0],
+                error: null,
+            };
+
+        } catch (error) {
+            return {
+                data: "Query not found user",
                 error: error,
             };
         }
@@ -175,7 +205,7 @@ class UserQueries{
         }
     }
 
-    protected async tryCatch(query?: any): Promise<object>  {
+    protected async tryCatch(query?: any)  {
         try {
             const res = await pool.query(query.text,query.values);
             return {

@@ -3,3 +3,4 @@ public/dist/
 public/types/
 .vscode
 .env
+package-lock.json
