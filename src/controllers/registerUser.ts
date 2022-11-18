@@ -23,18 +23,12 @@ export async function registerUser(req: any, res: any) {
     const nameValidator = new RegexValidator().name(
         newUser.first_name + newUser.last_name
     );
-    // console.log(nameValidator);
 
     const emailValidator = new RegexValidator().email(newUser.email);
-    // console.log(emailValidator);
 
     const passwordValidator = new RegexValidator().pass(newUser.password);
-    // console.log(passwordValidator);
-
-    //// console.log('Cookies do Front: ', req.cookies)
 
     const uniqueEmailCheck = await new UserQueries().verify(newUser.email);
-    // console.log("uniqueEmailCheck: ", uniqueEmailCheck);
 
     if (!uniqueEmailCheck.data) {
         if (
@@ -53,8 +47,6 @@ export async function registerUser(req: any, res: any) {
             res.cookie("token", response.data, {
                 expire: Date.now() + 3600000,
             });
-            // // console.log('Response.data: ', response.data)
-            // // console.log('Cookies enviados de volta: ',res.cookies)
             res.status(201).send(
                 "Usuário " + req.body.username + " cadastrado com sucesso"
             );

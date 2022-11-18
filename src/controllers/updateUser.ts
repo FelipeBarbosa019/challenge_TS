@@ -40,14 +40,7 @@ export async function updateUser(req: any, res: any) {
                         newData.last_name,
                         newData.password
                     );
-                    // console.log(
-                    //     "updateUser: " + req.params.user_id,
-                    //     newData.user_name,
-                    //     newData.email,
-                    //     newData.first_name,
-                    //     newData.last_name,
-                    //     newData.password
-                    // );
+                    
                     if (!updateUser.error) {
                         res.cookie("token", newData, {
                             expire: Date.now() + 3600000,

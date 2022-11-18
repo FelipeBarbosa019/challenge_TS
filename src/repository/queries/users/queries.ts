@@ -61,8 +61,6 @@ class UserQueries {
         try {
             const res = await pool.query(query.text, query.values);
 
-            // // console.log("login query res? ", res);
-
             if (res.rows.length == 1) {
                 return {
                     data: res.rows[0],
@@ -169,10 +167,8 @@ class UserQueries {
             values: [_id, _squad],
         };
         try {
-            // console.log("user: ", _id);
-            // console.log("squad: ", _squad);
             const res = await pool.query(query.text, query.values);
-            // console.log("addUserToSquad res: ", res.rows);
+
             return {
                 data: res.rows[0],
                 error: null,
@@ -225,18 +221,3 @@ class UserQueries {
 }
 
 export default UserQueries;
-
-// protected async tryCatch(query?: any) {
-//     try {
-//         const res = await pool.query(query.text, query.values);
-//         return {
-//             data: res.rows[0],
-//             error: null,
-//         };
-//     } catch (error) {
-//         return {
-//             data: "Query failed",
-//             error: error,
-//         };
-//     }
-// }

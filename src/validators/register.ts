@@ -1,17 +1,4 @@
 export class RegexValidator {
-    // username(check: any) {
-    //     ///\d\S\w/gim
-    //     const regex = new RegExp(/^[A-Za-z0-9_]{7,29}$/gim);
-    //     // RegExp(/^[\d\S\w]{5,20}+$/gi);
-    //     // RegExp(/^[A-Za-z0-9_]{7,29}$/gim);
-    //     if (!regex.test(check)) {
-    //         return {
-    //             message:
-    //                 "Username incorreto, deve conter apenas alfabetos, números ou sublinhados com comprimento de 8-30 caracteres.",
-    //         };
-    //     }
-    //     return { message: "Username validado com sucesso" };
-    // }
 
     name(check: any) {
         const regex = new RegExp(/^([a-z]{1,})([ ]{1}[a-z]{1,}){0,}$/gim);
