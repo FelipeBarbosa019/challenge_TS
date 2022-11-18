@@ -1,29 +1,38 @@
-
 import SquadQueries from "../repository/queries/squads/queries";
 import { RegexValidator } from "../validators/register";
 
 export async function updateSquad(req: any, res: any) {
-if (req.cookies.token.admin || req.cookies.token.leader) {
-    const oldData = req.cookies.token;
+    if (
+        req.cookies.token.admin ||
+        (req.cookies.token.leader &&
+            req.cookies.token.squad == req.params.team_id)
+    ) {
+        const nameValidator = new RegexValidator().name(req.body.name);
+        console.log(nameValidator);
 
-    const nameValidator = new RegexValidator().name(oldData.name);
-    console.log(nameValidator);
+        if (!nameValidator.error) {
+            // const updateSquad =
+            //  Accept-Patch: application/merge-patch+json
+            const updateSquadQuery = await new SquadQueries().updateSquad(
+                req.params.team_id,
+                req.body.old_leader,
+                req.body.new_leader,
+                req.body.squad_name
+            );
 
-    if (!nameValidator.error) {
-        // const updateSquad = 
-        //  Accept-Patch: application/merge-patch+json 
-        await new SquadQueries().updateSquad(
-            req.params.squad_id,
-            oldData.name,
-            oldData.old_leader,
-            req.body.leader
-        );
-        res.status(204);
-        // res.send(updateSquad);
+            if (!updateSquadQuery.error) {
+                res.status(200).send(
+                    `Equipe ${req.params.team_id} teve líder alterado de ${req.body.old_leader} para ${req.body.new_leader}`
+                );
+            } else {
+                res.status(500).send("Erro na query updateSquad");
+            }
+        } else {
+            res.status(400).send("Dados incorretos");
+        }
     } else {
-          res.status(500).send("Dados incorretos");
+        res.status(403).send("Usuário não possui permissão");
     }
-} else { res.status(500).send("Usuário não possui permissão") }
 }
 
 //  if (
