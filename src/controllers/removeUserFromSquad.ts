@@ -9,8 +9,7 @@ export function removeUserFromSquad(req: any, res: any) {
         const deleteUserSquad = new UserQueries().removeUserFromSquad(
             req.params.user_id
         );
-        res.status(200);
-        res.send("Usuário deletado do time com sucesso");
+        res.status(200).send("Usuário deletado do time com sucesso");
     } else {
         res.status(401).send("Usuário não possui permissão");
     }

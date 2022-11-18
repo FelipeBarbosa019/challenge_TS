@@ -8,11 +8,8 @@ export async function updateSquad(req: any, res: any) {
             req.cookies.token.squad == req.params.team_id)
     ) {
         const nameValidator = new RegexValidator().name(req.body.name);
-        console.log(nameValidator);
 
         if (!nameValidator.error) {
-            // const updateSquad =
-            //  Accept-Patch: application/merge-patch+json
             const updateSquadQuery = await new SquadQueries().updateSquad(
                 req.params.team_id,
                 req.body.old_leader,
@@ -35,14 +32,3 @@ export async function updateSquad(req: any, res: any) {
         res.status(403).send("Usuário não possui permissão");
     }
 }
-
-//  if (
-//      cookie?admin ||
-//      cookie?leader && cookie.squad = req.params.teams_id
-//  )
-
-// begin;
-//     update table squad set leader = $1 where id = $2;
-//     update table users set leader = false where id = $3;
-//     update table users set leader = true where id = $4;
-// commit;

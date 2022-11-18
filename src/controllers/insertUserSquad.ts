@@ -10,8 +10,7 @@ export function insertUserSquad(req: any, res: any) {
             req.params.user_id,
             req.params.team_id
         );
-        res.status(200);
-        res.send("Usuário inserido no time com sucesso");
+        res.status(200).send("Usuário inserido no time com sucesso");
     } else {
         res.status(500).send("Usuário não possui permissão");
     }
