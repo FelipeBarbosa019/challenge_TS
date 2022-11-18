@@ -13,7 +13,7 @@ if (req.cookies.token.admin || req.cookies.token.leader) {
         // const updateSquad = 
         //  Accept-Patch: application/merge-patch+json 
         await new SquadQueries().updateSquad(
-            req.params.squad_id,
+            req.params.team_id,
             oldData.name,
             oldData.old_leader,
             req.body.leader
