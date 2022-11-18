@@ -1,8 +1,8 @@
 import UserQueries from "../repository/queries/users/queries";
 
-export function listUsers(req: any, res: any) {
+export async function listUsers(req: any, res: any) {
     if (req.cookies.token.admin) {
-        const allUsersInfo = new UserQueries().getAllUsers();
+        const allUsersInfo = await new UserQueries().getAllUsers();
         res.status(200);
         res.send(allUsersInfo);
     } else {

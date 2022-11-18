@@ -61,10 +61,17 @@ class UserQueries {
         try {
             const res = await pool.query(query.text, query.values);
 
-            if (true) {
+            // console.log("login query res? ", res);
+
+            if (res.rows.length == 1) {
                 return {
                     data: res.rows[0],
                     error: null,
+                };
+            } else {
+                return {
+                    data: "User not found",
+                    error: "User not found",
                 };
             }
         } catch (error) {

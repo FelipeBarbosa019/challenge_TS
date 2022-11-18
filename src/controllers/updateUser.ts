@@ -35,7 +35,7 @@ export async function updateUser(req: any, res: any) {
                     !emailValidator.error &&
                     !passwordValidator.error
                 ) {
-                    const updateUser = new UserQueries().updateUser(
+                    const updateUser = await new UserQueries().updateUser(
                         req.params.user_id,
                         oldData.username,
                         oldData.email,
@@ -43,6 +43,9 @@ export async function updateUser(req: any, res: any) {
                         oldData.last_name,
                         oldData.password
                     );
+                    if (!updateUser.error) {
+                        res.status(200).send("Dados modificados com sucesso");
+                    }
                 } else {
                     res.status(500).send("Dados incorretos");
                 }
@@ -72,7 +75,7 @@ export async function updateUser(req: any, res: any) {
                 !emailValidator.error &&
                 !passwordValidator.error
             ) {
-                const updateUser = new UserQueries().updateUser(
+                const updateUser = await new UserQueries().updateUser(
                     req.params.user_id,
                     oldData.username,
                     oldData.email,
@@ -80,6 +83,9 @@ export async function updateUser(req: any, res: any) {
                     oldData.last_name,
                     oldData.password
                 );
+                if (!updateUser.error) {
+                    res.status(200).send("Dados modificados com sucesso");
+                }
             } else {
                 res.status(500).send("Dados incorretos");
             }
