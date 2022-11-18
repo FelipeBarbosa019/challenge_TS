@@ -19,12 +19,12 @@ class SquadQueries {
             await pool.query("begin;");
             const res1 = await pool.query(query.text1, query.values);
 
-            // console.log("res1: ", res1.rows);
+            // // console.log("res1: ", res1.rows);
             const res2 = await pool.query(query.text2, [
                 _leader,
                 res1.rows[0].id,
             ]);
-            // console.log("res2: ", res2.rows);
+            // // console.log("res2: ", res2.rows);
             if (res1.rows[0] && res2.rows[0]) {
                 await pool.query("commit;");
                 return {
@@ -124,19 +124,19 @@ class SquadQueries {
     }
 
     public async deleteSquad(_squad_id: number): Promise<QueryResponse> {
-        console.log("deleteSquad was called");
+        // console.log("deleteSquad was called");
         const query = {
             text1: "UPDATE users SET squad = null, leader = false WHERE squad = $1 RETURNING *;",
             text2: "DELETE FROM squads WHERE ID = $1 RETURNING *;",
             values: [_squad_id],
         };
         try {
-            console.log("start of try catch");
+            // console.log("start of try catch");
             await pool.query("begin;");
             const res1 = await pool.query(query.text1, query.values);
-            console.log("deleteSquad res1: ", res1.rows);
+            // console.log("deleteSquad res1: ", res1.rows);
             const res2 = await pool.query(query.text2, query.values);
-            console.log("deleteSquad res2: ", res2.rows);
+            // console.log("deleteSquad res2: ", res2.rows);
 
             if (res1.rows[0] && res2.rows[0]) {
                 await pool.query("commit;");
@@ -152,7 +152,7 @@ class SquadQueries {
                 };
             }
         } catch (error) {
-            console.log("deleteSquad error log: ", error);
+            // console.log("deleteSquad error log: ", error);
             return {
                 data: "Query failed",
                 error: error,

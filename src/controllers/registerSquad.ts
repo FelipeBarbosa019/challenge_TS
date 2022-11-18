@@ -13,14 +13,14 @@ export async function registerSquad(req: any, res: any) {
             req.body.leader,
             req.body.name
         );
-        console.log("createSquad: " + createSquad);
+        // console.log("createSquad: " + createSquad);
 
         if (createSquad.error) {
             res.status(500).send("Erro, equipe não cadastrada");
         } else {
             res.status(200).send("Equipe criada com sucesso");
         }
-        // console.log(createSquad);
+        // // console.log(createSquad);
     } else {
         res.status(500).send("Usuário não possui permissão");
     }

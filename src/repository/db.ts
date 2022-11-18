@@ -8,7 +8,6 @@ export const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
-
 // async function query() {
 //     const codeSQL = `
 //     CREATE TABLE accounts (
@@ -20,11 +19,11 @@ export const pool = new Pool({
 //     `;
 //     try {
 //         const res = await pool.query(codeSQL);
-//         console.log("Table account created\n");
+//         // console.log("Table account created\n");
 //         console.table(res.rows);
 //         return { err: null, data: res.rows };
 //     } catch (err: any) {
-//         console.log(err.stack);
+//         // console.log(err.stack);
 //         return { err: err };
 //     }
 // }

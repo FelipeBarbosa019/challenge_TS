@@ -61,7 +61,7 @@ class UserQueries {
         try {
             const res = await pool.query(query.text, query.values);
 
-            // console.log("login query res? ", res);
+            // // console.log("login query res? ", res);
 
             if (res.rows.length == 1) {
                 return {
@@ -169,10 +169,10 @@ class UserQueries {
             values: [_id, _squad],
         };
         try {
-            console.log("user: ", _id);
-            console.log("squad: ", _squad);
+            // console.log("user: ", _id);
+            // console.log("squad: ", _squad);
             const res = await pool.query(query.text, query.values);
-            console.log("addUserToSquad res: ", res.rows);
+            // console.log("addUserToSquad res: ", res.rows);
             return {
                 data: res.rows[0],
                 error: null,

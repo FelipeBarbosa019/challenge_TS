@@ -3,7 +3,7 @@ import { RegexValidator } from "../validators/register";
 
 export async function updateUser(req: any, res: any) {
     if (req.cookies.token.id == req.params.user_id) {
-        const oldData = req.cookies.token;
+        const newData = req.cookies.token;
 
         if (req.body.email) {
             const uniqueEmailCheck = await new UserQueries().verify(
@@ -12,23 +12,20 @@ export async function updateUser(req: any, res: any) {
 
             if (!uniqueEmailCheck.error) {
                 Object.keys(req.body).forEach((key) => {
-                    oldData[key] = req.body[key];
+                    newData[key] = req.body[key];
                 });
 
                 const nameValidator = new RegexValidator().name(
-                    oldData.first_name + oldData.last_name
+                    newData.first_name + newData.last_name
                 );
-                console.log(nameValidator);
 
                 const emailValidator = new RegexValidator().email(
-                    oldData.email
+                    newData.email
                 );
-                console.log(emailValidator);
 
                 const passwordValidator = new RegexValidator().pass(
-                    oldData.password
+                    newData.password
                 );
-                console.log(passwordValidator);
 
                 if (
                     !nameValidator.error &&
@@ -37,38 +34,46 @@ export async function updateUser(req: any, res: any) {
                 ) {
                     const updateUser = await new UserQueries().updateUser(
                         req.params.user_id,
-                        oldData.username,
-                        oldData.email,
-                        oldData.first_name,
-                        oldData.last_name,
-                        oldData.password
+                        newData.user_name,
+                        newData.email,
+                        newData.first_name,
+                        newData.last_name,
+                        newData.password
                     );
+                    // console.log(
+                    //     "updateUser: " + req.params.user_id,
+                    //     newData.user_name,
+                    //     newData.email,
+                    //     newData.first_name,
+                    //     newData.last_name,
+                    //     newData.password
+                    // );
                     if (!updateUser.error) {
+                        res.cookie("token", newData, {
+                            expire: Date.now() + 3600000,
+                        });
                         res.status(200).send("Dados modificados com sucesso");
                     }
                 } else {
-                    res.status(500).send("Dados incorretos");
+                    res.status(400).send("Dados incorretos");
                 }
             } else {
-                res.status(500).send("Email já cadastrado");
+                res.status(400).send("Email já cadastrado");
             }
         } else {
             Object.keys(req.body).forEach((key) => {
-                oldData[key] = req.body[key];
+                newData[key] = req.body[key];
             });
 
             const nameValidator = new RegexValidator().name(
-                oldData.first_name + oldData.last_name
+                newData.first_name + newData.last_name
             );
-            console.log(nameValidator);
 
-            const emailValidator = new RegexValidator().email(oldData.email);
-            console.log(emailValidator);
+            const emailValidator = new RegexValidator().email(newData.email);
 
             const passwordValidator = new RegexValidator().pass(
-                oldData.password
+                newData.password
             );
-            console.log(passwordValidator);
 
             if (
                 !nameValidator.error &&
@@ -77,20 +82,23 @@ export async function updateUser(req: any, res: any) {
             ) {
                 const updateUser = await new UserQueries().updateUser(
                     req.params.user_id,
-                    oldData.username,
-                    oldData.email,
-                    oldData.first_name,
-                    oldData.last_name,
-                    oldData.password
+                    newData.user_name,
+                    newData.email,
+                    newData.first_name,
+                    newData.last_name,
+                    newData.password
                 );
                 if (!updateUser.error) {
+                    res.cookie("token", newData, {
+                        expire: Date.now() + 3600000,
+                    });
                     res.status(200).send("Dados modificados com sucesso");
                 }
             } else {
-                res.status(500).send("Dados incorretos");
+                res.status(400).send("Dados incorretos");
             }
         }
     } else {
-        res.status(500).send("Usuário não possui permissão");
+        res.status(403).send("Usuário não possui permissão");
     }
 }
