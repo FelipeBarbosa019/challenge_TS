@@ -30,6 +30,7 @@ export async function updateSquad(req: any, res: any) {
         } else {
             res.status(400).send("Dados incorretos");
         }
+
     } else {
         res.status(403).send("Usuário não possui permissão");
     }
