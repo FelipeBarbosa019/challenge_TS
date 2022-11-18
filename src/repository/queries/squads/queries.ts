@@ -91,19 +91,23 @@ class SquadQueries {
     ): Promise<QueryResponse> {
         const query = {
             text1: "UPDATE squads SET leader = $2, name = $3 WHERE id = $1 RETURNING *;",
-            text2: "UPDATE users SET leader = false WHERE id = $1",
-            text3: "UPDATE users SET leader = true WHERE id = $1",
+            text2: "UPDATE users SET leader = false WHERE id = $1 AND squad = $2 RETURNING *",
+            text3: "UPDATE users SET leader = true WHERE id = $1 AND squad = $2 RETURNING *",
             values1: [_squad_id, _new_leader, _squad_name],
-            values2: [_old_leader],
-            values3: [_new_leader],
+            values2: [_old_leader, _squad_id],
+            values3: [_new_leader, _squad_id],
         };
         try {
-            const begin = await pool.query("begin;");
+            await pool.query("begin;");
             const res1 = await pool.query(query.text1, query.values1);
+            // console.log("res1? ", res1.rows);
             const res2 = await pool.query(query.text2, query.values2);
+            // console.log("res2? ", res2.rows);
             const res3 = await pool.query(query.text3, query.values3);
-            if (res1.rows[0] || res2.rows[0] || res3.rows[0]) {
-                const commit = await pool.query("commit;");
+            // console.log("res3? ", res3.rows);
+            if (res1.rows[0] && res2.rows[0] && res3.rows[0]) {
+                // console.log("validou as 3 queries!!!");
+                await pool.query("commit;");
                 return {
                     data: res1.rows[0],
                     error: null,
