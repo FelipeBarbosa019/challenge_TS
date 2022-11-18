@@ -3,7 +3,7 @@
 //     const oldData = req.cookies.token;
 
 //     const nameValidator = new RegexValidator().name(oldData.name);
-//     console.log(nameValidator);
+//     // console.log(nameValidator);
 
 //     if (!nameValidator.error) {
 //           const updateSquad = new SquadQueries().updateSquad(

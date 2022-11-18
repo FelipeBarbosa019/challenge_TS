@@ -1,18 +1,17 @@
 export { getOwnInfo } from "./getOwnInfo";
-export { getUserInfo } from "./getUserInfo"
-export { listUsers } from "./listUsers"
-export { getSquadInfo } from "./getSquadInfo"
-export { listSquads } from "./listSquads"
-export { registerUser } from "./registerUser"
-export { registerSquad } from "./registerSquad"
-export { insertUserSquad } from "./insertUserSquad"
-export { updateUser } from "./updateUser"
-export { updateSquad } from "./updateSquad"
-export { deleteUser } from "./deleteUser"
-export { deleteSquad } from "./deleteSquad"
-export { removeUserFromSquad } from "./removeUserFromSquad"
-export { login } from './login'
-
+export { getUserInfo } from "./getUserInfo";
+export { listUsers } from "./listUsers";
+export { getSquadInfo } from "./getSquadInfo";
+export { listSquads } from "./listSquads";
+export { registerUser } from "./registerUser";
+export { registerSquad } from "./registerSquad";
+export { insertUserSquad } from "./insertUserSquad";
+export { updateUser } from "./updateUser";
+export { updateSquad } from "./updateSquad";
+export { deleteUser } from "./deleteUser";
+export { deleteSquad } from "./deleteSquad";
+export { removeUserFromSquad } from "./removeUserFromSquad";
+export { login } from "./login";
 
 // export function login(req: any, res: any) {
 //     if (!req.cookies.token) {
@@ -33,7 +32,7 @@ export { login } from './login'
 
 //         //foreach para atualizar o cadastro
 //         res.cookie("token", sessionID);
-//         console.log("Cookies: ", req.cookies.token);
+//         // console.log("Cookies: ", req.cookies.token);
 //         res.json({ id: check.id });
 //     } else {
 //         const check = users.find(
@@ -57,7 +56,7 @@ export { login } from './login'
 
 //             //foreach para atualizar o cadastro
 //             res.cookie("token", sessionID);
-//             console.log("Cookies: ", req.cookies.token);
+//             // console.log("Cookies: ", req.cookies.token);
 //             res.json({ id: check2.id });
 //             return;
 //         }
@@ -83,8 +82,8 @@ export { login } from './login'
 
 // export function getOwnInfo(req: any, res: any) {
 //     const userOwnInfo = new UserQueries().getUser
-//     // falta especificar como obter no banco de dados o username 
-//     console.log(userOwnInfo);
+//     // falta especificar como obter no banco de dados o username
+//     // console.log(userOwnInfo);
 //     res.status(200)
 //     res.send(userOwnInfo);
 //     return userOwnInfo;
@@ -96,7 +95,7 @@ export { login } from './login'
 //         const userInfo = {
 //             username: req.param.user_id   // aqui ele deve obter a partir do parametro passado na url
 //         };
-//     console.log(userInfo);
+//     // console.log(userInfo);
 //     res.status(200)
 //     res.send(userInfo);
 //     return userInfo;
@@ -108,11 +107,11 @@ export { login } from './login'
 //         leader: req.body.leader,
 //     };
 //     const nameValidator = new RegexValidator().name(newSquad.name);
-    
+
 //     if (!nameValidator) { return res.send("Nome não validado.") }
 //     if (!(new UserQueries().getUser)) { return res.send("Não é usuário administrador!") }
 
-//     console.log(nameValidator, "\n time:", newSquad);
+//     // console.log(nameValidator, "\n time:", newSquad);
 //     res.status(201)
 //     res.send(newSquad);
 //     return newSquad;
@@ -121,17 +120,17 @@ export { login } from './login'
 //     const squadInfo: SquadsType = {
 //         name: req.param.team,
 //     };
-    
+
 //     const querySquad = new SquadQueries().getSquad(req.param.team)
 
-//     console.log(squadInfo);
+//     // console.log(squadInfo);
 //     res.status(200)
 //     res.send(squadInfo);
 //     return squadInfo;
 // }
 // export function listSquads(req: any, res: any) {
 //     const allSquadsInfo =  new SquadQueries().getAllSquads
-    
+
 //     console.dir(allSquadsInfo);
 //     res.status(200)
 //     res.send(allSquadsInfo);

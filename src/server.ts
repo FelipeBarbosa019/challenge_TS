@@ -1,13 +1,13 @@
 const express = require("express");
 const routerServer = require("./router/router.js");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
-require('dotenv').config()
+require("dotenv").config();
 
 const port = process.env.SERVER_PORT;
 const app = express();
 
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
