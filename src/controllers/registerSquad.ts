@@ -1,6 +1,6 @@
+import { QueryResponse } from "../interfaces/interface";
 import SquadQueries from "../repository/queries/squads/queries";
 import { RegexValidator } from "../validators/register";
-import { UsersType, QueryResponse, SquadsType } from "../interfaces/interface";
 
 export async function registerSquad(req: any, res: any) {
     if (!new RegexValidator().name(req.body.name)) {
