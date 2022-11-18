@@ -12,6 +12,6 @@ export function removeUserFromSquad(req: any, res: any) {
         res.status(200);
         res.send("Usuário deletado do time com sucesso");
     } else {
-        res.status(500).send("Usuário não possui permissão");
+        res.status(401).send("Usuário não possui permissão");
     }
 }

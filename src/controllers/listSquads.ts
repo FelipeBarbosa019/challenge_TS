@@ -1,11 +1,11 @@
 import SquadQueries from "../repository/queries/squads/queries";
 
-export function listSquads(req: any, res: any) {
+export async function listSquads(req: any, res: any) {
     if (req.cookies.token.admin) {
-        const getAllSquads = new SquadQueries().getAllSquads();
+        const getAllSquads = await new SquadQueries().getAllSquads();
         res.status(200);
         res.send(getAllSquads);
     } else {
-        res.status(500).send("Usuário não possui permissão");
+        res.status(401).send("Usuário não possui permissão");
     }
 }
